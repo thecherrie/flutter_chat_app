@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutterchatapp/pages/dashboard.dart';
 import 'package:flutterchatapp/pages/welcome_screen.dart';
 
 void main() => runApp(FlutterChat());
@@ -22,6 +23,7 @@ class FlutterChat extends StatelessWidget {
       initialRoute: WelcomeScreen.id,
       routes: {
         WelcomeScreen.id: (context) => WelcomeScreen(),
+        Dashboard.id: (context) => Dashboard(),
       },
     );
   }
