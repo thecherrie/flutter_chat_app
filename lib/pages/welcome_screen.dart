@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutterchatapp/global.dart';
 import 'package:flutterchatapp/models/user.dart';
 import 'package:flutterchatapp/pages/dashboard.dart';
 import 'package:flutterchatapp/utils.dart';
+import 'package:provider/provider.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static String id = 'welcome_screen';
@@ -81,8 +83,10 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 onPressed: () async {
                   if(_formKey.currentState.validate()) {
                     try{
-                      await _auth.signInWithEmailAndPassword(email: email, password: password).then((value) async {
-                        user.username = await utils.getUsernameFromDocument();
+                      await _auth.signInWithEmailAndPassword(email: email, password: password).then((futureUser) async {
+                        //user.username = await utils.getUsernameFromDocument(email);
+                        Provider.of<User>(context).addUsername(await utils.getUsernameFromDocument(email));
+                        Provider.of<User>(context).addEmail(email);
                         Navigator.pushNamed(context, Dashboard.id);
                       });
                     }catch(e){

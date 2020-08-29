@@ -19,10 +19,10 @@ class Utils {
     }
   }
 
-  Future<String> getUsernameFromDocument() async {
-    print('(utils) GET USERNAME FROM DOC: ${loggedInUser.email}');
+  Future<String> getUsernameFromDocument(String email) async {
+    print('(utils) GET USERNAME FROM DOC: $email');
     final query = await _firestore.collection('users')
-        .where('email', isEqualTo: loggedInUser.email)
+        .where('email', isEqualTo: email)
         .getDocuments();
     final username = query.documents[0].data['username'];
     return username;
