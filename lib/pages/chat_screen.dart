@@ -24,14 +24,8 @@ class ChatScreen extends StatelessWidget {
 
     String username = Provider.of<User>(context).username;
 
-    return Container(
-      height: 300.0,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(40.0), topRight: Radius.circular(40.0),),
-        color: Colors.white,
-      ),
-      child: Padding(
+    return Scaffold(
+      body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 25.0, horizontal: 10.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,7 +33,7 @@ class ChatScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 20),
               child: Text(
-                  nameOfChat,
+                  nameOfChat ?? "Error retrieving chat name",
                 style: TextStyle(
                   fontSize: 20.0,
                 ),
@@ -50,7 +44,7 @@ class ChatScreen extends StatelessWidget {
               stream: _firestore.collection('chats').where('members', arrayContains: username).snapshots(),
               builder: (context, snapshot) {
                 if(!snapshot.hasData) {
-                  return null;
+                  return Text("Nothing here.");
                 } else {
                   final messagesWrapper = snapshot.data.documents;
                   List<ListTile> messageTileList = [];

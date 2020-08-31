@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +6,7 @@ import 'package:flutterchatapp/models/user.dart';
 import 'package:flutterchatapp/pages/chat_screen.dart';
 import 'package:flutterchatapp/pages/welcome_screen.dart';
 import 'package:flutterchatapp/utils.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 class Dashboard extends StatefulWidget {
@@ -148,11 +147,14 @@ class _DashboardState extends State<Dashboard> {
                         title: Text(chatName),
                         subtitle: Text(chatMembers.toString()),
                         onTap: () {
-                          showModalBottomSheet(
+                          showBarModalBottomSheet(
+                              context: context,
+                              builder: (context, scrollController) => ChatScreen(nameOfChat: chatName,));
+                          /*showModalBottomSheet(
                             context: context,
                             builder: (context) => SingleChildScrollView(
                               child: Container(
-                                padding: EdgeInsets.only(bottom: 300.0 /*MediaQuery.of(context).viewInsets.bottom*/),
+                                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
                                 child: Container(
                                   color: Colors.black54,
                                   child: ChatScreen(nameOfChat: chatName,
@@ -160,7 +162,7 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                               ),
                             ),
-                          );
+                          );*/
                         },
                       );
 
