@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutterchatapp/global.dart';
+import 'package:provider/provider.dart';
 
 class Utils {
 
@@ -26,6 +27,21 @@ class Utils {
         .getDocuments();
     final username = query.documents[0].data['username'];
     return username;
+  }
+
+  void addMessageToStream({String message, String sender, String chatName}) async {
+    final query = await _firestore.collection('chats')
+        .where('name', isEqualTo: chatName)
+        .limit(1)
+        .getDocuments();
+    final docID = query.documents[0].documentID;
+    Map messageStructure = ({
+       'messageSender': sender,
+       'messageText': message,
+    });
+    await _firestore.collection('chats').document(docID).updateData({
+        'messages': FieldValue.arrayUnion([messageStructure])
+    });
   }
 
 }

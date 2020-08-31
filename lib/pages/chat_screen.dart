@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutterchatapp/models/user.dart';
+import 'package:flutterchatapp/utils.dart';
 import 'package:provider/provider.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -10,6 +11,11 @@ class ChatScreen extends StatelessWidget {
   FirebaseAuth _auth = FirebaseAuth.instance;
   
   String nameOfChat;
+  String messageText;
+
+  final _controller = TextEditingController();
+
+  Utils utils = Utils();
 
   ChatScreen({ this.nameOfChat });
 
@@ -73,12 +79,18 @@ class ChatScreen extends StatelessWidget {
               }
             ),
             TextField(
+              keyboardType: TextInputType.multiline,
+              controller: _controller,
               autofocus: true,
               decoration: InputDecoration(
                 suffixIcon: MaterialButton(
                   child: Icon(Icons.send),
                   onPressed: () {
-
+                    utils.addMessageToStream(
+                        message: _controller.text,
+                        sender: username,
+                        chatName: nameOfChat);
+                    _controller.clear();
                   },
                 ),
                 hintText: "Type your message here",
